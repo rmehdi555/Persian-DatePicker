@@ -1,0 +1,199 @@
+<!--
+create sample of Persian Datepicker by 555
+@rmehdi555
+-->
+<!doctype html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/persian-datepicker.min.css"/>
+  <script src="js/jquery.js"></script>
+  <script src="js/persian-date.min.js"></script>
+  <script src="js/persian-datepicker.min.js"></script>
+  <script src="js/moment.min.js"></script>
+  <title>Persian Datepicker</title>
+</head>
+
+
+<body dir="rtl">
+<script type="text/javascript">
+  $(document).ready(function() {
+  $('.range-to-example').pDatepicker({
+	format: 'YYYY/MM/DD',
+	});
+	$('.range-from-example').pDatepicker({
+	format: 'YYYY/MM/DD',
+	});
+  
+      var to, from;  // معرفی متغییر های تاریخ شروع و پایان
+to = $(".range-to-example").pDatepicker({
+    format: 'YYYY/MM/DD',
+	minDate: new persianDate(new Date()),
+    altField: '.range-to-example-alt',
+    altFormat: 'LLLL',
+    initialValue: false,
+    onSelect: function (unix) {
+        to.touched = true;
+        if (from && from.options && from.options.maxDate != unix) {
+            var cachedValue = from.getState().selected.unixDate;
+            from.options = {maxDate: unix};
+            if (from.touched) {
+                from.setDate(cachedValue);
+            }
+        }
+    }
+});
+from = $(".range-from-example").pDatepicker({
+    format: 'YYYY/MM/DD',
+	minDate: new persianDate(new Date()),
+    altField: '.range-from-example-alt',
+    altFormat: 'LLLL',
+    initialValue: false,
+    onSelect: function (unix) {
+        from.touched = true;
+        if (to && to.options && to.options.minDate != unix) {
+            var cachedValue = to.getState().selected.unixDate;
+            to.options = {minDate: unix};
+            if (to.touched) {
+                to.setDate(cachedValue);
+            }
+        }
+    }
+});
+
+
+
+
+
+  
+   $('#submit').click(function(){
+   var first=from.getState().selected.unixDate;  // دریافت مقدار عددی تاریخ شروع
+   var second=to.getState().selected.unixDate;  // دریافت مقدار عددی تاریخ پایان
+
+  var day=Math.round((second-first)/(1000*60*60*24));  // محاسبه تعداد روز های بازه شروع تا پایان
+
+  
+  var firstDate=new persianDate(first); //  تبدیل تاریخ شروع به شمسی
+  $('#firstDateShamsi').text(firstDate.format("YYYY/MM/DD"));
+  firstDate = moment(new Date(first));  //  تبدیل تاریخ شروع به میلادی
+  $('#firstDateMiladi').text(firstDate.format("YYYY/MM/DD"));
+  
+  var secondDate=new persianDate(second); //  تبدیل تاریخ پایان به شمسی
+  $('#secondDateShamsi').text(secondDate.format("YYYY/MM/DD"));
+  secondDate = moment(new Date(second));//  تبدیل تاریخ پایان به میلادی
+  $('#secondDateMiladi').text(secondDate.format("YYYY/MM/DD"));
+
+
+  $('#day').text(day);
+  
+  
+  });
+  
+  
+
+
+
+
+  });
+
+</script>
+
+
+
+<!-- Material form register -->
+<div class="card">
+
+    <h5 class="card-header info-color white-text text-center py-4">
+        <strong>Persian Document</strong>
+    </h5>
+
+    <!--Card content-->
+    <div class="card-body px-lg-5 pt-0">
+
+        <!-- Form -->
+        <form class="text-center" style="color: #757575;" action="#!">
+
+            <div class="form-row">
+                <div class="col">
+                    <!-- First name -->
+                    <div class="md-form">
+					    <label for="range-from-example">تاریخ شروع</label>       
+                        <input type="text" id="range-from-example" class="form-control range-from-example">
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Last name -->
+                    <div class="md-form">
+				    	<label for="range-to-example">تایخ پایان</label> 
+                        <input type="email" id="range-to-example" class="form-control range-to-example">
+                    </div>
+                </div>
+            </div>
+
+            
+     <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="button" id="submit" >محاسبه</button>
+
+
+        </form>
+        <!-- Form -->
+
+    </div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="container">
+	  <h2>نتایج</h2>
+           
+	  <table class="table table-striped">
+		<thead>
+		  <tr>
+			<th>متغیر</th>
+			<th>مقدار</th>
+
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+			<td>تاریخ شروع به شمسی</td>
+			<td id="firstDateShamsi"></td>
+		  </tr>
+		  <tr>
+			<td>تاریخ شروع به میلادی</td>
+			<td id="firstDateMiladi"></td>
+		  </tr>
+          <tr>
+              <td>تاریخ پایان به شمسی</td>
+              <td id="secondDateShamsi"></td>
+          </tr>
+          <tr>
+              <td>تاریخ پایان به میلادی</td>
+              <td id="secondDateMiladi"></td>
+          </tr>
+          <tr>
+              <td>تعداد روز های بازه شروع تا پایان</td>
+              <td id="day"></td>
+          </tr>
+		</tbody>
+	  </table>
+	</div>
+
+
+</div>
+<!-- Material form register -->
+
+
+
+
+
+
+
+
+
+</body>
+</html>
